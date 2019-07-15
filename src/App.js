@@ -55,7 +55,7 @@ class App extends Component {
           <Route path='/phone' component={Phone} />
           <Route
             path='/id'
-            render={ (props) => <ID {...props} userLogged={this.state.userLogged} user={this.state.username} />}
+            render={ (props) => <ID {...props} user={this.state.username} />}
           />
         </div>
       </BrowserRouter>

@@ -2,10 +2,7 @@ import React from 'react';
 // import { Link } from 'react-router-dom'
 
 const Navbar = props => {
-    console.log ('1 ----------')
-    console.log (props.username)
-    console.log (props.userLogged)
-    console.log ('2 ----------')
+
     return (
         <nav>
             <div className="nav-wrapper blue-grey darken-3">

@@ -16,10 +16,20 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const ID = props => {
-    console.log ('3 ----------')
-    console.log (props.userLogged)
-    console.log (props.user)
-    console.log ('4 ----------')
+
+    const pipedrivePersonKyc = () => {
+
+        const phone = 'greg'
+
+        // call fb functions
+        let crmPersonKyc = firebase.functions().httpsCallable('crmPersonKyc')
+        crmPersonKyc({phone}).then((result) => {
+            // console.log('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
+            alert('Kyc accepted/refused for Person => name:' + phone )
+        }).catch(function(err) {
+            console.log(err)
+        });
+    }
 
     const pipedrivePersonAdd = () => {
         // We need the logged user phone number first
@@ -38,7 +48,7 @@ const ID = props => {
                 alert('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
             }).catch(function(err) {
                 console.log(err)
-            });
+            })
       })
     };
     const logout = () => {
@@ -52,6 +62,7 @@ const ID = props => {
             <h4>Step2: Validate your identity</h4>
             <p>Please upload your passport to proove your identity.</p>
             <button className="btn  orange darken-3 btn-index" onClick={pipedrivePersonAdd}>Create CRM person</button>   
+            <button className="btn  orange darken-3 btn-index" onClick={pipedrivePersonKyc}>KYC person</button>   
             <button className="btn  orange darken-3 btn-index" onClick={logout}>Logout</button>
         </div>
     )
