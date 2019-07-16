@@ -17,15 +17,23 @@ firebase.initializeApp(firebaseConfig);
 
 const ID = props => {
 
-    const pipedrivePersonKyc = () => {
+    const pipedrivePersonKyc = event => {
 
-        const phone = 'greg'
+        const phone = props.username
+        const kycStatusWanted = event.target.value
+
+        console.log (props)
 
         // call fb functions
         let crmPersonKyc = firebase.functions().httpsCallable('crmPersonKyc')
-        crmPersonKyc({phone}).then((result) => {
+        crmPersonKyc({ personId : props.crmPersonId, kycStatusWanted })
+        .then((result) => {
             // console.log('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
-            alert('Kyc accepted/refused for Person => name:' + phone )
+            alert('Kyc status changed for Person => name:' + phone + ' - Status: ' + kycStatusWanted)
+            
+            // Update App state with Kyc Status
+            props.updateParentKyc(kycStatusWanted)
+
         }).catch(function(err) {
             console.log(err)
         });
@@ -41,29 +49,41 @@ const ID = props => {
             console.log(user.phoneNumber + ' is logged in')
             const phone = user.phoneNumber
             
-            // call fb functions
+            // call fb function
             let crmPersonAdd = firebase.functions().httpsCallable('crmPersonAdd')
             crmPersonAdd({phone}).then((result) => {
+                
+                // Update App state with crmID
+                props.updateParentId(result.data.id)
+                
                 console.log('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
                 alert('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
+            
             }).catch(function(err) {
                 console.log(err)
             })
-      })
+        })
     };
     const logout = () => {
         firebase.auth().signOut().then(() => {  
             console.log('User has logged out with success');
         })
     };
-    
+
     return (
         <div className="id center-align">
             <h4>Step2: Validate your identity</h4>
             <p>Please upload your passport to proove your identity.</p>
-            <button className="btn  orange darken-3 btn-index" onClick={pipedrivePersonAdd}>Create CRM person</button>   
-            <button className="btn  orange darken-3 btn-index" onClick={pipedrivePersonKyc}>KYC person</button>   
-            <button className="btn  orange darken-3 btn-index" onClick={logout}>Logout</button>
+            <div className='row'>
+                <button className="btn orange darken-3 btn-index" onClick={pipedrivePersonAdd}>Create person in CRM </button>   
+            </div>
+            <div className='row'>
+                <button className="btn green darken-3 btn-index" onClick={pipedrivePersonKyc} value={'True'}>KYC verified=True</button>   
+                <button className="btn red darken-3 btn-index" onClick={pipedrivePersonKyc} value={'False'}>KYC verified=False</button>   
+            </div>
+            <div className='row'>
+                <button className="btn black darken-3 btn-index" onClick={logout}>Logout</button>
+            </div>
         </div>
     )
 }

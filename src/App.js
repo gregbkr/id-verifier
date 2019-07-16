@@ -9,53 +9,65 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/functions'
 
+import Test from './components/Test'
+
 class App extends Component {
 
   constructor (props) {
-    super()
+    super(props)
     this.state = { 
-      userLogged: true,
-      username: false
+      username: false,
+      crmPersonId: false,
+      kycVerified: false
     }
-
+    this.onChangeCrmPersonId = this.onChangeCrmPersonId.bind(this)
   }
 
+  // Get crmId from ID component, and display in navbar
+  onChangeCrmPersonId = id => {
+    this.setState({crmPersonId: id})
+    console.log('Updated App state with crmID = ' + this.state.crmPersonId)
+  }
+
+  // Get Kyc status from ID component, and display in navbar
+  onChangeKycStatus = status => {
+    this.setState({kycVerified: status})
+    console.log('Updated App state with kycVerified = ' + this.state.kycVerified)
+  }
+
+  // Check if user is logged in, if so, display in navbar
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user){
+        console.log(user.phoneNumber + ' is logged out')
+        this.setState({ username: null })
+      }
+      console.log(user.phoneNumber + ' is logged in!')
+      this.setState({ username: user.phoneNumber }) 
+    });
+  }
 
   render(){
-
-    // Update state username 
-    const updateUsername = (name) => {
-      this.setState({username: name})
-      console.log('4----------------')
-      console.log(this.state.username)
-      console.log('5----------------')
-    }
-
-    // check if user if already loggedIn
-    const checkIfLoggedIn = () => { 
-      firebase.auth().onAuthStateChanged(function(user){
-        if (!user) {
-            return console.log('No user is logged in!')
-            // props.userLogged = false
-        }
-        console.log(user.phoneNumber + ' is logged in')
-        updateUsername(user.phoneNumber)
-      })
-    }
-    // Refresh what's is visible on screen after page updates
-    window.onload = function(){
-      checkIfLoggedIn()
-    }
 
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar username={this.state.username} />
+          <Navbar 
+            username={this.state.username} 
+            crmPersonId={this.state.crmPersonId}  
+            kycVerified={this.state.kycVerified}
+          />
           <Route exact path='/' component={Home} />
           <Route path='/phone' component={Phone} />
           <Route
             path='/id'
-            render={ (props) => <ID {...props} user={this.state.username} />}
+            render={ (props) => <ID 
+              {...props} 
+              username={this.state.username} 
+              crmPersonId={this.state.crmPersonId} 
+              updateParentId={this.onChangeCrmPersonId}
+              updateParentKyc={this.onChangeKycStatus}
+            />}
           />
         </div>
       </BrowserRouter>

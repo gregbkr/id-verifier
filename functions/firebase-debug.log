@@ -1,0 +1,14 @@
+[debug] [2019-07-16T11:27:19.481Z] ----------------------------------------------------------------------
+[debug] [2019-07-16T11:27:19.483Z] Command:       /usr/local/Cellar/node/12.3.1/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2019-07-16T11:27:19.483Z] CLI Version:   7.0.2
+[debug] [2019-07-16T11:27:19.483Z] Platform:      darwin
+[debug] [2019-07-16T11:27:19.483Z] Node Version:  v12.3.1
+[debug] [2019-07-16T11:27:19.487Z] Time:          Tue Jul 16 2019 18:27:19 GMT+0700 (Indochina Time)
+[debug] [2019-07-16T11:27:19.488Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-07-16T11:27:19.499Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-07-16T11:27:19.499Z] > authorizing via signed-in user
+[debug] [2019-07-16T11:27:19.499Z] [iam] checking project id-prod for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2019-07-16T11:27:19.501Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-07-16T11:27:19.501Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>

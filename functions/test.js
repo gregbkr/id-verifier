@@ -1,9 +1,7 @@
 var Pipedrive = require('pipedrive');
 const axios = require('axios');
 
-
 var pipedrive = new Pipedrive.Client('9307a46a3cfbe4b230a91e6e89c681b49fb7067b', { strictMode: true })
-
 
 async function PersonAdd() {
 
