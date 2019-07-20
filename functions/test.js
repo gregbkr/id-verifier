@@ -1,50 +1,57 @@
+
 var Pipedrive = require('pipedrive');
 const axios = require('axios');
 
-var pipedrive = new Pipedrive.Client('9307a46a3cfbe4b230a91e6e89c681b49fb7067b', { strictMode: true })
-
-async function PersonAdd() {
-
-    var profile = {
-        'phone': 'greg',
-        'name': 'greg',
-        'org_id': '727' // ID-demo
-    }
-
-    const createEntity = name => payload => new Promise((resolve, reject) => {
-        pipedrive[name].add(payload, (error, id) => error ? reject(error) : resolve(id));
-    });
-    const createPerson = createEntity('Persons');
-
-    const person = await createPerson(profile);
-    console.log('Person created in CRM => id:' + person.id + ', Name:' + person.name);
-    // console.log(person)
-}
-// PersonAdd()
+var i='toto'
+alert('Id verification status: ' + i + '/nMessage: i')
 
 
 
 
-company_domain = 'lkdtech'
-person_id = '368'
-api_token = '9307a46a3cfbe4b230a91e6e89c681b49fb7067b'
+// var pipedrive = new Pipedrive.Client('9307a46a3cfbe4b230a91e6e89c681b49fb7067b', { strictMode: true })
 
-field_id = '9094'
-field_key = '63d6f93be047cf2dbb9d8fba94ca09ee89311353'
-field_value = 'False'
+// async function PersonAdd() {
 
-data = { [field_key] : field_value }
+//     var profile = {
+//         'phone': 'greg',
+//         'name': 'greg',
+//         'org_id': '727' // ID-demo
+//     }
 
-// UPDATE PERSON FIED DATA
-updateUrl = 'https://' + company_domain + '.pipedrive.com/v1/persons/'+ person_id + '?api_token=' + api_token
+//     const createEntity = name => payload => new Promise((resolve, reject) => {
+//         pipedrive[name].add(payload, (error, id) => error ? reject(error) : resolve(id));
+//     });
+//     const createPerson = createEntity('Persons');
 
-axios.put(updateUrl, data)
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+//     const person = await createPerson(profile);
+//     console.log('Person created in CRM => id:' + person.id + ', Name:' + person.name);
+//     // console.log(person)
+// }
+// // PersonAdd()
+
+
+
+
+// company_domain = 'lkdtech'
+// person_id = '368'
+// api_token = '9307a46a3cfbe4b230a91e6e89c681b49fb7067b'
+
+// field_id = '9094'
+// field_key = '63d6f93be047cf2dbb9d8fba94ca09ee89311353'
+// field_value = 'False'
+
+// data = { [field_key] : field_value }
+
+// // UPDATE PERSON FIED DATA
+// updateUrl = 'https://' + company_domain + '.pipedrive.com/v1/persons/'+ person_id + '?api_token=' + api_token
+
+// axios.put(updateUrl, data)
+//   .then(function (response) {
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
 
 
 

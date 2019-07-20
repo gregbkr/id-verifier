@@ -5,11 +5,7 @@ import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Phone from './components/Phone'
 import ID from './components/ID'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/functions'
-
-import Test from './components/Test'
+import firebase from './firebase'
 
 class App extends Component {
 
@@ -39,11 +35,11 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (!user){
-        console.log(user.phoneNumber + ' is logged out')
-        this.setState({ username: null })
+        console.log(this.state.username + ' is logged out')
+        return this.setState({ username: null })
       }
       console.log(user.phoneNumber + ' is logged in!')
-      this.setState({ username: user.phoneNumber }) 
+      return this.setState({ username: user.phoneNumber }) 
     });
   }
 

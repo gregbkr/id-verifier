@@ -11,3 +11,51 @@
 .phoneAuth {
   margin-top: 50px;
 }
+
+.nav-info {
+  margin-top: -15px;
+  margin-right: 15px;
+}
+
+.nav-icon {
+  margin-left: 30px;
+}
+
+#id-passport {
+  height: 300px;
+  width: 400px;
+}
+
+.id-passport {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.id-input {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#id-icon-clock {
+  vertical-align: bottom;
+}
+
+.id-spinner {
+  position:fixed;
+  top:50%;
+  left:50%;
+}
+
+.id-btn-retry {
+  margin-top: 30px;
+}
+
+.id-admin {
+  margin-top: 150px;
+  /* position: absolute;
+  bottom: 0; 
+  left: 30%;
+
+  vertical-align: middle; */
+}

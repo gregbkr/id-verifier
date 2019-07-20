@@ -6,19 +6,19 @@ const Navbar = props => {
     return (
         <nav>
             <div className="nav-wrapper blue-grey darken-3">
-            <a href="/" className="brand-logo" id="title"><i className="material-icons" id="icon">beenhere</i>ID verifier</a>
+            <a href="/" className="brand-logo left" id="title"><i className="material-icons" id="icon">beenhere</i>ID verifier</a>
             
-            <ul id="user" className="right hide-on-med-and-down">
+            <ul id="user" className="right nav-info">
                 {props.username &&
-                    <li><a href="#"><i className="material-icons left">phone</i>{props.username}</a></li>
+                    <li><p className="nav-text"><i className="material-icons left nav-icon">phone</i>{props.username}</p></li>
                 }
                 {props.crmPersonId &&
-                    <li><a href="#"><i className="material-icons left">account_circle</i>{props.crmPersonId}</a></li>
+                    <li><p className="nav-text"><i className="material-icons left nav-icon">account_circle</i>{props.crmPersonId}</p></li>
                 }
-                {props.kycVerified &&
-                    <li><a href="#"><i className="material-icons left">check</i></a></li>
+                {   props.kycVerified &&
+                    <li><p className="nav-text"><i className="material-icons left nav-icon">check</i>Kyc Verified</p></li>
                 }
-            </ul> 
+            </ul>
             
             </div>
         </nav>

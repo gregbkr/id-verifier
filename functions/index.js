@@ -57,3 +57,30 @@ exports.crmPersonAdd = functions.https.onCall(async (data, context) => {
     return person;
 })
 
+exports.idVerification = functions.https.onCall(async (data, context) => {
+  var kycResponses = [
+    { id:0, status:'success', message:'Id has been verified with success!' },
+    { id:1, status:'failed', message:'Bad quality or blurry picture' },
+    { id:2, status:'failed', message:'Document not valid, can not find mandatory information' },
+    { id:3, status:'failed', message:'Listed as a fake id on our server' }
+  ]
+  console.log('1 ----------------')
+  console.log(data.phone)
+  console.log(data.fileName)
+  console.log('2 ----------------')
+  
+
+  // No free KYC validator for now, so we just check the first letter of the filename
+  // "0.GregPassport.jpeg" will pass verification
+  // "0-1-2-3.GregPassport.jpeg" will fail verification
+
+  var id = data.fileName.charAt(0)
+  // If first chars is not 1,2,3,4 we default answer to 2
+  if ( !(id >= 0 && id <= 3) ) {
+    id = 2
+  }
+  console.log('Stating ID verification for person: ' + data.phone + '| file name: ' + data.fileName + '| id:' + id);
+  console.log('Result of ID verification - Status: ' + kycResponses[id].status + '| message:' + kycResponses[id].message);
+
+  return kycResponses[id];
+})
