@@ -11,7 +11,7 @@ const Home = () => {
         <div className="start center-align">
             <h4>Validate your identity </h4>
             <p>Use this portal to validate your ID in 2 steps</p>
-            <Link to='/phone'><button className="btn orange darken-3 btn-primary">Start</button></Link>
+            <Link to='/phone'><button className="btn orange darken-3 btn-primary home-btn">Start</button></Link>
         </div>
     )
 }

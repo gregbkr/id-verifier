@@ -11,74 +11,15 @@ class ID extends Component {
             pic: passport,
             file: false,
             stage: 'inputRequired',
-            kycMessage: ''  
+            kycVerified: '',
+            kycMessage: ''
         }
+        this.pipedrivePersonAdd = this.pipedrivePersonAdd.bind(this);
+        // this.pipedrivePersonKyc = this.pipedrivePersonKyc.bind(this);
         // this.onChangeCrmPersonId = this.onChangeCrmPersonId.bind(this)
     }
 
-    pipedrivePersonKyc = event => {
-
-        const phone = this.props.username
-        console.log(phone)
-        var kycStatusWanted = ''
-        kycStatusWanted = event.target.value
-
-        // call fb functions
-        let crmPersonKyc = firebase.functions().httpsCallable('crmPersonKyc')
-        crmPersonKyc({ personId : this.props.crmPersonId, kycStatusWanted })
-        .then((result) => {
-            // console.log('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
-            alert('Kyc status changed for Person => name:' + phone + ' - Status: ' + kycStatusWanted)
-
-            // Update App state with Kyc Status (var need to be a boolean)
-            var kycStatusWantedBool = false
-            if (kycStatusWanted.toLowerCase() === "true")  { kycStatusWantedBool=true }
-            if (kycStatusWanted.toLowerCase() === "false") { kycStatusWantedBool=false }
-            this.props.updateParentKyc(kycStatusWantedBool)
-
-        }).catch(function(err) {
-            console.log(err)
-        });
-    }
-
-    pipedrivePersonAdd = () => {
-
-        const phoneTest = this.props.username
-
-        // We need the logged user phone number first
-        firebase.auth().onAuthStateChanged( user => {
-            if (!user) {
-                return alert('No user is logged in!')
-                // props.userLogged = false
-            }
-            console.log(user.phoneNumber + ' is logged in')
-            const phone = user.phoneNumber
-            
-            // call fb function
-            let crmPersonAdd = firebase.functions().httpsCallable('crmPersonAdd')
-
-            crmPersonAdd({phone}).then((result) => {
-
-                // Update App state with crmID (to display after in Navbar)
-                this.props.updateParentId(result.data.id)               
-
-                console.log('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
-                alert('Person created in CRM => id:' + result.data.id + ', Name:' + result.data.name)
-            
-            }).catch(function(err) {
-                console.log(err)
-            })
-        })
-    };
-    
-    logout = () => {
-        firebase.auth().signOut().then(() => {  
-            console.log('User has logged out with success');
-        })
-        this.props.updateParentId(false)
-        this.props.updateParentId(false)
-    };
-
+    // Load pic in ID state
     idSelected = e => {
         if(e.target.files[0]){
             // Create temp pic url to display
@@ -87,7 +28,64 @@ class ID extends Component {
             this.setState({file: e.target.files[0]})
         }
     }
+    
+    // Add a new CRM person (using phone as the name / phone ). Return CRM personID (username) to app state
+    pipedrivePersonAdd = props => {
+   
+        // We need the logged user phone number first
+        firebase.auth().onAuthStateChanged( user => {
+            if (!user) {
+                return alert('No user is logged in, please restart the workflow!')
+            }
+            const phone = user.phoneNumber
+            console.log(phone + ' is logged in')
 
+            // call fb function to CREATE PERSON (will return personID)
+            let crmPersonAdd = firebase.functions().httpsCallable('crmPersonAdd')
+
+            crmPersonAdd({phone}).then((result) => {
+                var personID = result.data.id
+                // Update App state with crmID (to display after in Navbar)
+                this.props.updateParentId(personID)
+
+                // alert('Person created in CRM => id:' + personID + ', Name:' + result.data.name)
+                console.log('Person created in CRM => CrmID: ' + personID + '| kycVerified: ' + this.state.kycVerified + '| kycMessage: ' + this.state.kycMessage)
+
+                // call fb function to change the 2 KYC fields
+                let crmPersonKyc = firebase.functions().httpsCallable('crmPersonKyc')
+                crmPersonKyc({ 
+                    personId : personID,
+                    kycStatusWanted: this.state.kycVerified.toString(),
+                    kycMessage: this.state.kycMessage 
+                })
+                .then((result) => {
+                    console.log('Updated Kyc fields in CRM for person => name: ' + phone + ' | personID: ' + personID + ' | kycVerified: ' + this.state.kycVerified + ' | kycMessage: ' + this.state.kycMessage)
+                    // alert('Kyc status changed for Person => name:' + phone + 'personID' + personID + ' - kycVerified: ' + kycVerified)
+                    this.props.updateParentKyc(this.state.kycVerified)
+
+                    // Display the result to user
+                    if (this.state.kycVerified) {
+                        this.setState ({ 
+                            stage: 'resultSuccess',
+                        })
+                    }
+                    else {
+                        this.setState ({ 
+                            stage: 'resultFailure',
+                        })
+                    }
+
+                }).catch(function(err) {
+                    console.log(err)
+                })
+
+            }).catch(function(err) {
+                console.log(err)
+            })
+        })
+    };
+
+    // Send pic to fb function for validation. Then create CRM person and update KYC status in CRM
     sendId = () => {
         
         if (!this.state.file)  {
@@ -110,28 +108,56 @@ class ID extends Component {
         },
         () => {
             // show complete
-            console.log('Will load document to firebase...')
             firebase.storage().ref(`id-documents/${this.props.username}`).child(image.name).getDownloadURL().then(url => {
                 console.log('Document has been uploaded to server at url: ' + url)
-                console.log('ID verification is starting...')
                 
-                // call fb functions
+                // call fb functions TO CHECK ID (fake services)
+                console.log('ID verification is starting...')
                 let idVerification = firebase.functions().httpsCallable('idVerification')
+                
                 idVerification({ phone: this.props.username, fileName : image.name })
                 .then((result) => {
                     console.log(result)
+                    console.log('Id verification response => verified? ' + result.data.status + '\r\nMessage: ' + result.data.message)
                     // alert('Id verification status: ' + result.data.status + '\r\nMessage: ' + result.data.message)
                     this.setState ({ kycMessage: result.data.message })
-                    if (result.data.status === 'success') {
-                        this.setState ({ stage: 'resultSuccess'})
+                    if (result.data.status) {
+                        this.setState ({ kycVerified: true })
                     }
                     else {
-                        this.setState ({ stage: 'resultFailure'})
+                        this.setState ({ kycVerified: false })
                     }
+                })
+                .then( () => {
+                    console.log(this.state)
+
+                    // Now create a new CRM person
+                    this.pipedrivePersonAdd()
+                    
+
+                    // console.log(this.props.crmPersonId)
+    
+                    // var kyc = new Object();
+                    // kyc.target = new Object();
+                    // kyc.target.value = true
+                    
+                    // this.pipedrivePersonKyc ({
+                    //     event: true,
+                    // })
+                
+                    
+                    
+
+
+
                 })
             
             })
         })
+
+
+
+
     }
 
     retry = () => {
@@ -144,17 +170,25 @@ class ID extends Component {
         return true
     }
 
+    logout = () => {
+        firebase.auth().signOut().then(() => {  
+            console.log('User has logged out with success');
+        })
+        this.props.updateParentId(false)
+        this.props.updateParentId(false)
+    };
+
     render () {
         return (
             <div className="id">
                 <div className="row center">
                     <h4>Step2: Validate your identity</h4>
-                    <p>Please upload your passport to proove your identity.</p>
+                    <p>Please upload your passport to prove your identity.</p>
                     <img className="id-passport" src={this.state.pic} alt="passport_logo" id='id-passport'/>
                     <br></br>
                     { this.state.stage === 'inputRequired' &&
                         <div className="file-field input-field id-input">
-                        <div className="btn teal lighten-2">
+                        <div className="btn teal lighten-1">
                             <span>Choose File</span>
                             <input type="file" onChange={this.idSelected} id='id-file'/>
                         </div>
@@ -181,22 +215,22 @@ class ID extends Component {
                     { this.state.stage === 'resultFailure' &&
                         <div className="container">
                             <h5 className="red-text darken-3"><i className="material-icons id-icon-clock">cancel</i> ID could not be verified: "{this.state.kycMessage}"</h5>
-                            <button className="btn gray darken-3 id-btn btn-primary id-btn-retry" onClick={this.retry}><i className="material-icons left">loop</i>Retry</button>
+                            <button className="btn teal lighten-1 id-btn btn-primary id-btn-retry" onClick={this.retry}><i className="material-icons left">loop</i>Retry</button>
                         </div>
                     }  
                 </div>
 
                 {/* // ADMIN SECTION */}
-                <div className="row id-admin center">
-                    <div className="col s12 center-align">
+                {/* <div className="row id-admin center">
+                    <div className="col s12 center-align"> */}
                         {/* <div className="card blue-grey darken-1"> */}
-                        <button className="btn orange darken-3 btn-small" onClick={this.pipedrivePersonAdd}>1. Create person in CRM </button>   
+                        {/* <button className="btn orange darken-3 btn-small" onClick={this.pipedrivePersonAdd}>1. Create person in CRM </button>   
                         <button className="btn green darken-3 btn-small" onClick={this.pipedrivePersonKyc} value={true}>2.KYC verified=True</button>
-                        <button className="btn red darken-3 btn-small" onClick={this.pipedrivePersonKyc} value={false}>2.KYC verified=False</button>   
-                        <button className="btn orange darken-3 btn-small" onClick={this.logout}>4.Logout</button>
+                        <button className="btn red darken-3 btn-small" onClick={this.pipedrivePersonKyc} value={false}>2.KYC verified=False</button>    */}
+                        {/* <button className="btn orange darken-3 btn-small" onClick={this.logout}>Logout</button> */}
                         {/* </div> */}
-                    </div>
-                </div>
+                    {/* </div>
+                </div> */}
             </div>
         )
     }

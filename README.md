@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ID verifier
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+### Scope
+Simple webpage to validate an ID document and store result in CRM (pipedrive). 
+KYC provider is fake for now.
+User need to provide a phone number, and an ID (passport)
 
-### `npm start`
+### Tech
+- Hosting: Firebase cloud
+- Front: React
+- Backend: Firebase functions
+- Authentification : Firebase auth (tel + sms code)
+- Storage: firebase storage to store ID
+- Database: Pipedrive CRM to store user phone + kyc result
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Flow
+User -> nodejs REACT @firebase -> login via tel SMS code firebase-auth 
+  -> Upload ID to firebase storage -> Use fake firebase function to check ID -> Store result in CRM pipedrive
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
-### `npm test`
+## Setup
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Setup firebase
+- Create a new project in firebase `id`, location default (US)
+- Activate auth (email + password)
+- Activate storage
 
-### `npm run build`
+## Run project locally:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I can not (yet) run firebase function + code locally. Instead run npm and always deploy latest function to firebase cloud.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Run code env:  `npm start`
+Build: `npm run build`
+Deploy to firebase: `firebase deploy --debug`
+Deploy only functions to firebase: `firebase deploy --only functions`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Use the APP
 
-### `npm run eject`
+Because we don't have yet a KYC provider, result of KYC is fake and depends on file ID document name.
+If file name start by:
+- "0": { id:0, status:true, message:'Id has been verified with success!' },
+- "1": { id:1, status:false, message:'Bad quality or blurry picture' },
+- "2": { id:2, status:false, message:'Document not valid, can not find mandatory information' },
+- "3": { id:3, status:false, message:'Listed as a fake id on our server' }
+- Other name will user case "3"
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Deploy via CI-CD
+- Just push code in master and it will get deployed!
+- Setup tuto [here](https://medium.com/@rambabusaravanan/firebase-hosting-deployment-automation-with-gitlab-ci-f3fad9130d62)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Next steps
+- CD_CI gitlab
+- Better UI
+- real KYC sandbox?

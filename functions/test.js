@@ -2,13 +2,16 @@
 var Pipedrive = require('pipedrive');
 const axios = require('axios');
 
-var i='toto'
-alert('Id verification status: ' + i + '/nMessage: i')
-
-
-
 
 // var pipedrive = new Pipedrive.Client('9307a46a3cfbe4b230a91e6e89c681b49fb7067b', { strictMode: true })
+
+var bool = true;
+var x = bool.toString();
+
+console.log (x)
+console.log (bool)
+
+console.group(typeof bool)
 
 // async function PersonAdd() {
 
@@ -32,13 +35,13 @@ alert('Id verification status: ' + i + '/nMessage: i')
 
 
 
-// company_domain = 'lkdtech'
-// person_id = '368'
-// api_token = '9307a46a3cfbe4b230a91e6e89c681b49fb7067b'
+company_domain = 'lkdtech'
+person_id = '368'
+api_token = '9307a46a3cfbe4b230a91e6e89c681b49fb7067b'
 
-// field_id = '9094'
-// field_key = '63d6f93be047cf2dbb9d8fba94ca09ee89311353'
-// field_value = 'False'
+field_id = '9094'
+field_key = '63d6f93be047cf2dbb9d8fba94ca09ee89311353'
+field_value = 'False'
 
 // data = { [field_key] : field_value }
 
@@ -55,11 +58,25 @@ alert('Id verification status: ' + i + '/nMessage: i')
 
 
 
+// GET ALL PERSON FIELDS
+// url = 'https://' + company_domain + '.pipedrive.com/v1/personFields?api_token=' + api_token
+// console.log(url)
+
+// async function get() {
+
+//     const response = await axios.get(url)
+//     console.log(response.data)
+// }
+// get()
+
+
+
 // GET PERSON FIELD KEY
 // url = 'https://' + company_domain + '.pipedrive.com/v1/personFields/'+ field_id  + '?api_token=' + api_token
 // console.log(url)
 
 // async function get() {
+
 //     const response = await axios.get(url)
 //     // console.log(response)
 // }

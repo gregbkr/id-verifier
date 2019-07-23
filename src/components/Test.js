@@ -14,13 +14,18 @@ class Test extends Component {
     }    
   }
   
-  onClick = () => {
-    promise1.then(value => {
-      console.log(value);
-      // expected output: "Success!"
-      this.props.updateParentId(value)      
-    });
-  }
+  // onClick = () => {
+  //   promise1.then(value => {
+  //     console.log(value);
+  //     // expected output: "Success!"
+  //     this.props.updateParentId(value)      
+  //   });
+  // }
+
+
+  kyc = new Object();
+  kyc.target.value = true
+  console.log(kyc.target.value)
 
   render(){
     return (
