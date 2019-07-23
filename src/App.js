@@ -52,6 +52,8 @@ class App extends Component {
             username={this.state.username} 
             crmPersonId={this.state.crmPersonId}  
             kycVerified={this.state.kycVerified}
+            updateParentId={this.onChangeCrmPersonId}
+            updateParentKyc={this.onChangeKycStatus}            
           />
           <Route exact path='/' component={Home} />
           <Route path='/phone' component={Phone} />

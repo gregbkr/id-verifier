@@ -21,16 +21,18 @@
   margin-left: 30px;
 }
 
-.home-btn {
-  margin-top: 40px;
+#nav-btn-logout {
+  margin-top: 25px;
+  margin-left: 30px;
 }
 
-#id-passport {
-  height: 300px;
-  width: 400px;
+.home-btn {
+  margin-top: 25px;
 }
 
 .id-passport {
+  height: 300px;
+  width: 400px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -41,7 +43,7 @@
   margin-right: auto;
 }
 
-#id-icon-clock {
+.id-icon-clock {
   vertical-align: bottom;
 }
 
@@ -57,9 +59,4 @@
 
 .id-admin {
   margin-top: 150px;
-  /* position: absolute;
-  bottom: 0; 
-  left: 30%;
-
-  vertical-align: middle; */
 }

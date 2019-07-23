@@ -134,29 +134,10 @@ class ID extends Component {
                     // Now create a new CRM person
                     this.pipedrivePersonAdd()
                     
-
-                    // console.log(this.props.crmPersonId)
-    
-                    // var kyc = new Object();
-                    // kyc.target = new Object();
-                    // kyc.target.value = true
-                    
-                    // this.pipedrivePersonKyc ({
-                    //     event: true,
-                    // })
-                
-                    
-                    
-
-
-
                 })
             
             })
         })
-
-
-
 
     }
 
@@ -170,25 +151,17 @@ class ID extends Component {
         return true
     }
 
-    logout = () => {
-        firebase.auth().signOut().then(() => {  
-            console.log('User has logged out with success');
-        })
-        this.props.updateParentId(false)
-        this.props.updateParentId(false)
-    };
-
     render () {
         return (
             <div className="id">
                 <div className="row center">
                     <h4>Step2: Validate your identity</h4>
                     <p>Please upload your passport to prove your identity.</p>
-                    <img className="id-passport" src={this.state.pic} alt="passport_logo" id='id-passport'/>
+                    <img className="id-passport" src={this.state.pic} alt="passport_logo"/>
                     <br></br>
                     { this.state.stage === 'inputRequired' &&
                         <div className="file-field input-field id-input">
-                        <div className="btn teal lighten-1">
+                        <div className="btn grey darken-3">
                             <span>Choose File</span>
                             <input type="file" onChange={this.idSelected} id='id-file'/>
                         </div>
@@ -202,35 +175,23 @@ class ID extends Component {
                     { this.state.stage === 'waitingVerification' &&
                         <div className="container">
                             <div className="container id-spinner">
-                                <Spinner size={40} spinnerColor={"#fb8c00"} spinnerWidth={4} visible={true} />
+                                <Spinner size={40} spinnerColor={"#424242"} spinnerWidth={4} visible={true} />
                             </div>
-                            <h5 className="orange-text darken-3"><i className="material-icons id-icon-clock">access_time</i> Please wait while we are verifying your identity document.</h5>
+                            <h5><i className="material-icons id-icon-clock">access_time</i> Please wait while we are verifying your identity document...</h5>
                         </div>   
                     }
                     { this.state.stage === 'resultSuccess' &&
                         <div className="container">
-                            <h5 className="green-text darken-3"><i className="material-icons id-icon-clock">check_circle</i> ID has been verified with success!</h5>
+                            <h5 className="green-text darken-4"><i className="material-icons id-icon-clock">check_circle</i> ID document has been verified with success!</h5>
                         </div>
                     }   
                     { this.state.stage === 'resultFailure' &&
                         <div className="container">
-                            <h5 className="red-text darken-3"><i className="material-icons id-icon-clock">cancel</i> ID could not be verified: "{this.state.kycMessage}"</h5>
-                            <button className="btn teal lighten-1 id-btn btn-primary id-btn-retry" onClick={this.retry}><i className="material-icons left">loop</i>Retry</button>
+                            <h5 className="orange-text darken-4"><i className="material-icons id-icon-clock">cancel</i> ID document could not be verified: "{this.state.kycMessage}"</h5>
+                            <button className="btn id-btn id-btn-retry orange darken-3" onClick={this.retry}><i className="material-icons left">loop</i>Retry</button>
                         </div>
                     }  
                 </div>
-
-                {/* // ADMIN SECTION */}
-                {/* <div className="row id-admin center">
-                    <div className="col s12 center-align"> */}
-                        {/* <div className="card blue-grey darken-1"> */}
-                        {/* <button className="btn orange darken-3 btn-small" onClick={this.pipedrivePersonAdd}>1. Create person in CRM </button>   
-                        <button className="btn green darken-3 btn-small" onClick={this.pipedrivePersonKyc} value={true}>2.KYC verified=True</button>
-                        <button className="btn red darken-3 btn-small" onClick={this.pipedrivePersonKyc} value={false}>2.KYC verified=False</button>    */}
-                        {/* <button className="btn orange darken-3 btn-small" onClick={this.logout}>Logout</button> */}
-                        {/* </div> */}
-                    {/* </div>
-                </div> */}
             </div>
         )
     }
