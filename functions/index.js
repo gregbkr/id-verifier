@@ -14,7 +14,7 @@ exports.crmPersonKyc = functions.https.onCall(async (data, context) => {
   companyDomain = 'lkdtech'
   // personId = '368'
   personId = data.personId
-  apiToken = '9307a46a3cfbe4b230a91e6e89c681b49fb7067b'
+  apiToken = 'xxx'
   
   fieldId = '9094' // => (DEMO) KYC verified?
   fieldKey = '63d6f93be047cf2dbb9d8fba94ca09ee89311353'

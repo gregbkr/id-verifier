@@ -1,6 +1,12 @@
 # ID verifier
 
 ## Overview
+<<<<<<< HEAD
+More info: you can find an overview of that setup on my [blog](https://greg.satoshi.tech/firebase-your-first-app-id-verifier/)
+
+=======
+More info: you can find an overview of that setup on my [blog](https://greg.satoshi.tech/firebase-you-first-app-id-verifier/)
+>>>>>>> 7b0573f... Edit readme
 
 ### Scope
 - Simple webpage to validate an ID document and store result in CRM (pipedrive). 
@@ -15,6 +21,8 @@
 - Authentification : firebase auth (tel + sms code)
 - Storage: firebase storage to store ID
 - Database: pipedrive CRM to store user phone + kyc result
+- Code + CICD: gitlab.com (github is just a mirror)
+
 
 ### Flow
 User -> nodejs REACT @firebase -> login via tel SMS code firebase-auth -> Upload ID to firebase storage -> Use fake firebase function to check ID -> Store result in CRM pipedrive
@@ -53,7 +61,5 @@ Because we don't have yet a KYC provider, result of KYC is fake and depends on f
 - Setup tuto [here](https://medium.com/@rambabusaravanan/firebase-hosting-deployment-automation-with-gitlab-ci-f3fad9130d62)
 
 ## Next steps
-- CD-CI gitlab
-- Better UI
 - Find real KYC sandbox?
-- Store id in pipedrive too?
+- Store id document in pipedrive too?
