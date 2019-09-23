@@ -1,12 +1,7 @@
 # ID verifier
 
 ## Overview
-<<<<<<< HEAD
 More info: you can find an overview of that setup on my [blog](https://greg.satoshi.tech/firebase-your-first-app-id-verifier/)
-
-=======
-More info: you can find an overview of that setup on my [blog](https://greg.satoshi.tech/firebase-you-first-app-id-verifier/)
->>>>>>> 7b0573f... Edit readme
 
 ### Scope
 - Simple webpage to validate an ID document and store result in CRM (pipedrive). 
